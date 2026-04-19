@@ -35,4 +35,33 @@ public class UserDAO {
 
         return false;
     }
+
+    public User getUserByContact(String contact) {
+
+        User user = null;
+        String sql = "SELECT * FROM users WHERE contact = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, contact);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setContact(rs.getString("contact"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getString("status"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 }
