@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Maven POM for Event Management System
+    Module: CS5054NP – Advanced Programming and Technologies
+    Tech stack: Java 8, JSP, Servlet, Tomcat 9, MySQL, MVC
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <!-- Maven model version -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Project coordinates -->
+  <groupId>com.college.eventms</groupId>
+  <artifactId>event-management-system</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <!-- WAR packaging is REQUIRED for Tomcat deployment -->
+  <packaging>war</packaging>
+
+  <name>Event Management System</name>
+
+  <!-- ===================================================== -->
+  <!-- Dependencies required by the coursework               -->
+  <!-- ===================================================== -->
+  <dependencies>
+
+    <!-- ================= Servlet API ================= -->
+    <!-- Provides HttpServlet, Filters, Session handling -->
+    <!-- Marked as 'provided' because Tomcat supplies it -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- ================= JSP API ================= -->
+    <!-- Required to compile JSP pages -->
+    <!-- Provided by Tomcat at runtime -->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- ================= JSTL ================= -->
+    <!-- Used in JSP for for-each, if, url etc. -->
+    <!-- Cleaner JSPs, avoids Java scriptlets -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <!-- ================= MySQL JDBC ================= -->
+    <!-- Required for DAO layer and DBConnectionUtil -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.32</version>
+    </dependency>
+    <!-- ================= Password Encryption ================= -->
+    <!-- BCrypt hashing for secure password storage -->
+    <!-- Meets authentication & encryption milestone -->
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
+    </dependency>
+
+  </dependencies>
+
+  <!-- ===================================================== -->
+  <!-- Build configuration                                  -->
+  <!-- ===================================================== -->
+  <build>
+
+    <!-- Final WAR file name (clean & predictable) -->
+    <finalName>event-management-system</finalName>
+
+  </build>
+
+</project>
