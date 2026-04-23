@@ -17,6 +17,33 @@
 
 <p>Welcome Admin!</p>
 
+
+<a href=" <%=request.getContextPath()%>/add-event.jsp">Add New Event</a>
+<br><br>
+
+
+<%-- Success and Failure Messages--%>
+<%
+  String msg = (String) session.getAttribute("successMessage");
+  if (msg != null) {
+%>
+<p style="color: green;"><%= msg %></p>
+<%
+  session.removeAttribute("successMessage");
+  }
+%>
+<%
+  String fail = (String) session.getAttribute("failMessage");
+  if (fail != null) {
+%>
+<p style="color: red;"><%= fail %></p>
+<%
+    session.removeAttribute("failMessage");
+  }
+%>
+
+
+
 <a href="<%= request.getContextPath() %>/logout">Logout</a>
 
 </body>
