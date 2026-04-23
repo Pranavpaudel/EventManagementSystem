@@ -23,7 +23,7 @@ public class ViewEventServlet extends HttpServlet {
         List<Event> events = eventDAO.getAllEvents();
         request.setAttribute("events", events);
 
-        request.getRequestDispatcher("/WEB-INF/views/view-events.jsp")
+        request.getRequestDispatcher("/view-events.jsp")
                 .forward(request, response);
     }
 }

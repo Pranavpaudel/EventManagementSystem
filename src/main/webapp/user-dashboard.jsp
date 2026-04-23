@@ -17,6 +17,10 @@
 
 <p>Welcome! You are logged in as a student.</p>
 
+<a href="<%=request.getContextPath()%>/events">View Events</a>
+<br><br>
+
+
 <a href="<%= request.getContextPath() %>/logout">Logout</a>
 
 </body>
