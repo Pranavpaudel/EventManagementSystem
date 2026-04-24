@@ -1,4 +1,4 @@
-package model;
+package com.college.eventms.entity;
 
 public class User {
 

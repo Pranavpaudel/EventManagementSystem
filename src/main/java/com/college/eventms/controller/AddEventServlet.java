@@ -1,7 +1,7 @@
-package controller;
+package com.college.eventms.controller;
 
-import dao.EventDAO;
-import model.Event;
+import com.college.eventms.dao.EventDAO;
+import com.college.eventms.entity.Event;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

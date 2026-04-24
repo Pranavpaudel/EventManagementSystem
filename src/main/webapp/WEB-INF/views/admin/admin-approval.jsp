@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="model.User" %>
+<%@ page import="com.college.eventms.entity.User" %>
 
 <html>
 <head>
@@ -55,7 +55,7 @@
 </table>
 
 <br>
-<a href="<%=request.getContextPath()%>/jsp/admin-dashboard.jsp">Back</a>
+<a href="<%=request.getContextPath()%>/admin-dashboard.jsp">Back</a>
 
 </body>
 </html>

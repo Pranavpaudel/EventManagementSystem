@@ -1,7 +1,7 @@
-package controller;
+package com.college.eventms.controller;
 
-import dao.UserDAO;
-import model.User;
+import com.college.eventms.dao.UserDAO;
+import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/approve-users")
-public class AdminApprovalServlet extends HttpServlet {
+@WebServlet("/admin/users")
+public class AdminUserServlet extends HttpServlet {
 
-    private UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
-    // Show all pending users
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,11 +23,10 @@ public class AdminApprovalServlet extends HttpServlet {
         List<User> pendingUsers = userDAO.getPendingUsers();
         request.setAttribute("pendingUsers", pendingUsers);
 
-        request.getRequestDispatcher("/jsp/admin-approval.jsp")
-                .forward(request, response);
+        // JSP files are in webapp root
+        request.getRequestDispatcher("/admin-users.jsp").forward(request, response);
     }
 
-    // Approve a specific user
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -36,7 +34,7 @@ public class AdminApprovalServlet extends HttpServlet {
         int userId = Integer.parseInt(request.getParameter("userId"));
         userDAO.approveUser(userId);
 
-        // Refresh the page after approval
-        response.sendRedirect(request.getContextPath() + "/admin/approve-users");
+        // Reload the same page after approval
+        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

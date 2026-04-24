@@ -1,4 +1,4 @@
-package util;
+package com.college.eventms.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

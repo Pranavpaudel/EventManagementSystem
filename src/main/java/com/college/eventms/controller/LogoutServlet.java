@@ -1,4 +1,4 @@
-package controller;
+package com.college.eventms.controller;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -1,6 +1,6 @@
-package filter;
+package com.college.eventms.filter;
 
-import model.User;
+import com.college.eventms.entity.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

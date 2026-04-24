@@ -1,7 +1,7 @@
-package controller;
+package com.college.eventms.controller;
 
-import dao.UserDAO;
-import model.User;
+import com.college.eventms.dao.UserDAO;
+import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

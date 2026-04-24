@@ -1,7 +1,7 @@
-package dao;
+package com.college.eventms.dao;
 
-import model.User;
-import util.DBConnection;
+import com.college.eventms.entity.User;
+import com.college.eventms.util.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

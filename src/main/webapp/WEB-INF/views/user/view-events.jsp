@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="model.Event" %>
+<%@ page import="com.college.eventms.entity.Event" %>
 
 <html>
 <head>
