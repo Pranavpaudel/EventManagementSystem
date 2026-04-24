@@ -8,8 +8,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+
+
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp")
+                .forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -23,31 +33,32 @@ public class LoginServlet extends HttpServlet {
 
         if (user == null) {
             request.setAttribute("error", "User not found");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp")
+                    .forward(request, response);
             return;
         }
 
         if (!user.getPassword().equals(password)) {
             request.setAttribute("error", "Invalid credentials");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp")
+                    .forward(request, response);
             return;
         }
 
         if (!user.getStatus().equalsIgnoreCase("approved")) {
             request.setAttribute("error", "Account not approved by admin");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp")
+                    .forward(request, response);
             return;
         }
 
-        // Create session
         HttpSession session = request.getSession();
-        session.setAttribute("loggedInUser", user);
+        session.setAttribute("user", user);
 
-        //  Redirect based on role
         if (user.getRole().equalsIgnoreCase("admin")) {
-            response.sendRedirect(request.getContextPath() + "/admin-dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin-dashboard");
         } else {
-            response.sendRedirect(request.getContextPath() + "/user-dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/user-dashboard");
         }
     }
 }

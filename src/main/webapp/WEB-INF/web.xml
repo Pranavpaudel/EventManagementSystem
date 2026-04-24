@@ -2,109 +2,44 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+<web-app
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                        https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+        version="5.0">
 
+  <!-- Optional -->
+  <display-name>Event Management System</display-name>
+
+  <!-- ========= FILTERS ========= -->
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>com.college.eventms.filter.AuthFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- ========= SERVLETS ========= -->
+  <!-- (optional if you use @WebServlet, can be empty) -->
+
+  <!-- ========= SESSION ========= -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+  <!-- ========= WELCOME FILE ========= -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-  <servlet>
-    <servlet-name>indexPage</servlet-name>
-    <jsp-file>/WEB-INF/views/auth/index.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>indexPage</servlet-name>
-    <url-pattern>/index.jsp</url-pattern>
-  </servlet-mapping>
+  <!-- ========= ERROR PAGES ========= -->
+  <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/views/error.jsp</location>
+  </error-page>
 
-  <servlet>
-    <servlet-name>loginPage</servlet-name>
-    <jsp-file>/WEB-INF/views/auth/login.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>loginPage</servlet-name>
-    <url-pattern>/login.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>registerPage</servlet-name>
-    <jsp-file>/WEB-INF/views/auth/register.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>registerPage</servlet-name>
-    <url-pattern>/register.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>registerSuccessPage</servlet-name>
-    <jsp-file>/WEB-INF/views/auth/register-success.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>registerSuccessPage</servlet-name>
-    <url-pattern>/register-success.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>adminDashboardPage</servlet-name>
-    <jsp-file>/WEB-INF/views/admin/admin-dashboard.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>adminDashboardPage</servlet-name>
-    <url-pattern>/admin-dashboard.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>adminApprovalPage</servlet-name>
-    <jsp-file>/WEB-INF/views/admin/admin-approval.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>adminApprovalPage</servlet-name>
-    <url-pattern>/admin-approval.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>adminUsersPage</servlet-name>
-    <jsp-file>/WEB-INF/views/admin/admin-users.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>adminUsersPage</servlet-name>
-    <url-pattern>/admin-users.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>addEventPage</servlet-name>
-    <jsp-file>/WEB-INF/views/admin/add-event.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>addEventPage</servlet-name>
-    <url-pattern>/add-event.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>userDashboardPage</servlet-name>
-    <jsp-file>/WEB-INF/views/user/user-dashboard.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>userDashboardPage</servlet-name>
-    <url-pattern>/user-dashboard.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>viewEventsPage</servlet-name>
-    <jsp-file>/WEB-INF/views/user/view-events.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>viewEventsPage</servlet-name>
-    <url-pattern>/view-events.jsp</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>errorPage</servlet-name>
-    <jsp-file>/WEB-INF/views/error.jsp</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>errorPage</servlet-name>
-    <url-pattern>/error.jsp</url-pattern>
-  </servlet-mapping>
 </web-app>

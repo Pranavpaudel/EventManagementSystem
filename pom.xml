@@ -81,7 +81,24 @@
 
     <!-- Final WAR file name (clean & predictable) -->
     <finalName>event-management-system</finalName>
-
+    <plugins>
+    <plugin>
+      <groupId>org.codehaus.cargo</groupId>
+      <artifactId>cargo-maven3-plugin</artifactId>
+      <version>1.10.12</version>
+      <configuration>
+        <container>
+          <containerId>tomcat9x</containerId>
+          <type>embedded</type>
+        </container>
+        <configuration>
+          <type>standalone</type>
+          <properties>
+            <cargo.servlet.port>9090</cargo.servlet.port>
+          </properties>
+        </configuration>
+      </configuration>
+    </plugin>
+    </plugins>
   </build>
-
 </project>

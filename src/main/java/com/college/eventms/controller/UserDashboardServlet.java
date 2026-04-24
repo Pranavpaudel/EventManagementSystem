@@ -1,19 +1,17 @@
 package com.college.eventms.controller;
 
-import com.college.eventms.dao.EventDAO;
-import com.college.eventms.entity.Event;
 import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/events")
-public class ViewEventServlet extends HttpServlet {
-
-    private EventDAO eventDAO = new EventDAO();
+@WebServlet("/user-dashboard")
+public class UserDashboardServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -22,15 +20,13 @@ public class ViewEventServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+        if (user == null || !user.getRole().equalsIgnoreCase("student")) {
+            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+                    .forward(request, response);
             return;
         }
 
-        List<Event> events = eventDAO.getAllEvents();
-        request.setAttribute("events", events);
-
-        request.getRequestDispatcher("/WEB-INF/views/user/view-events.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/user/user-dashboard.jsp")
                 .forward(request, response);
     }
 }

@@ -2,12 +2,11 @@ package com.college.eventms.controller;
 
 import com.college.eventms.dao.EventDAO;
 import com.college.eventms.entity.Event;
+import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/admin/add-event")
@@ -16,17 +15,31 @@ public class AddEventServlet extends HttpServlet {
     private EventDAO eventDAO = new EventDAO();
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Prevent direct GET access
+        response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Read form data
+        HttpSession session = request.getSession(false);
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+
+        // Role check (important)
+        if (user == null || !user.getRole().equalsIgnoreCase("admin")) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
         String eventName = request.getParameter("eventName");
         String description = request.getParameter("description");
         String eventDate = request.getParameter("eventDate");
         String eventTime = request.getParameter("eventTime");
         String location = request.getParameter("location");
 
-        // Create Event object
         Event event = new Event();
         event.setEventName(eventName);
         event.setDescription(description);
@@ -34,17 +47,14 @@ public class AddEventServlet extends HttpServlet {
         event.setEventTime(eventTime);
         event.setLocation(location);
 
-        // Save to database
-
         boolean added = eventDAO.addEvent(event);
 
         if (added) {
-            request.getSession().setAttribute("successMessage", "Event added successfully!");
+            session.setAttribute("successMessage", "Event added successfully!");
         } else {
-            request.getSession().setAttribute("failMessage", "Failed to add event. Please try again.");
+            session.setAttribute("failMessage", "Failed to add event. Please try again.");
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-
     }
 }

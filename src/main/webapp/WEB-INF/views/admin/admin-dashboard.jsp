@@ -5,7 +5,7 @@
   Time: 2:17 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -17,21 +17,20 @@
 
 <p>Welcome Admin!</p>
 
-
-<a href=" <%=request.getContextPath()%>/add-event.jsp">Add New Event</a>
+<!-- Link to SERVLET, not JSP -->
+<a href="<%= request.getContextPath() %>/admin/add-event">Add New Event</a>
 <br><br>
 
-
-<%-- Success and Failure Messages--%>
 <%
   String msg = (String) session.getAttribute("successMessage");
   if (msg != null) {
 %>
 <p style="color: green;"><%= msg %></p>
 <%
-  session.removeAttribute("successMessage");
+    session.removeAttribute("successMessage");
   }
 %>
+
 <%
   String fail = (String) session.getAttribute("failMessage");
   if (fail != null) {
@@ -42,7 +41,7 @@
   }
 %>
 
-
+<br>
 
 <a href="<%= request.getContextPath() %>/logout">Logout</a>
 

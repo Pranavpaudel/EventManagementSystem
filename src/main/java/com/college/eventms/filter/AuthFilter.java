@@ -9,49 +9,51 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/*")   //  applies filter to ALL requests
+@WebFilter("/*")
 public class AuthFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
 
-        String contextPath = req.getContextPath();
-        String uri = req.getRequestURI();
+        String path = request.getRequestURI();
 
-        // IMPORTANT: do NOT create a new session
-        HttpSession session = req.getSession(false);
-        User user = (session != null) ? (User) session.getAttribute("loggedInUser") : null;
-
-        //  Public pages (must be allowed)
-        if (uri.equals(contextPath + "/") ||
-                uri.endsWith("login.jsp") ||
-                uri.endsWith("register.jsp") ||
-                uri.endsWith("register-success.jsp") ||
-                uri.contains("/login") ||
-                uri.contains("/register") ||
-                uri.contains("/logout") ||
-                uri.contains("/css/") ||
-                uri.contains("/images/")) {
+        // Allow public routes and static resources
+        if (path.contains("/login")
+                || path.contains("/register")
+                || path.contains("/static/")
+                || path.endsWith(".css")
+                || path.endsWith(".js")
+                || path.endsWith(".png")
+                || path.endsWith(".jpg")) {
 
             chain.doFilter(request, response);
             return;
         }
 
-        // Not logged in → redirect to login
+        HttpSession session = request.getSession(false);
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+
+        // Not logged in
         if (user == null) {
-            res.sendRedirect(contextPath + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // Student trying to access admin pages
-        if (uri.contains("admin") &&
-                !user.getRole().equalsIgnoreCase("admin")) {
+        // Admin-only URLs
+        if (path.contains("/admin") && !user.getRole().equalsIgnoreCase("admin")) {
+            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+                    .forward(request, response);
+            return;
+        }
 
-            res.sendRedirect(contextPath + "error.jsp");
+        // User-only dashboard (optional but recommended)
+        if (path.contains("/user-dashboard") && user.getRole().equalsIgnoreCase("admin")) {
+            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+                    .forward(request, response);
             return;
         }
 
