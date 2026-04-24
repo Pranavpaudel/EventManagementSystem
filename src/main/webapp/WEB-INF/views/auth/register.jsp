@@ -1,28 +1,47 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <title>User Registration</title>
-</head>
-<body>
 
-<h2>User Registration</h2>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp" />
 
-<form action="<%= request.getContextPath() %>/register" method="post">
+<!-- ===== Register Page Content ===== -->
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h1 class="auth-card__title">Create Account</h1>
 
-  <label>Full Name:</label><br>
-  <input type="text" name="fullName" required><br><br>
+    <form action="<%= request.getContextPath() %>/register" method="post">
 
-  <label>Contact:</label><br>
-  <input type="text" name="contact" required><br><br>
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" class="form-control" type="text" name="fullName"
+               placeholder="Enter your full name" required>
+      </div>
 
-  <label>Email:</label><br>
-  <input type="email" name="email" required><br><br>
+      <div class="form-group">
+        <label for="contact">Contact</label>
+        <input id="contact" class="form-control" type="text" name="contact"
+               placeholder="Enter your contact number" required>
+      </div>
 
-  <label>Password:</label><br>
-  <input type="password" name="password" required><br><br>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" type="email" name="email"
+               placeholder="Enter your email address" required>
+      </div>
 
-  <input type="submit" value="Register">
-</form>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" class="form-control" type="password" name="password"
+               placeholder="Create a password" required>
+      </div>
 
-</body>
-</html>
+      <button type="submit" class="btn btn--primary" style="width:100%;margin-top:.5rem;">Register</button>
+    </form>
+
+    <p class="auth-card__footer">
+      Already have an account?
+      <a href="<%= request.getContextPath() %>/login">Sign in</a>
+    </p>
+  </div>
+</div>
+
+<jsp:include page="/WEB-INF/templates/footer.jsp" />

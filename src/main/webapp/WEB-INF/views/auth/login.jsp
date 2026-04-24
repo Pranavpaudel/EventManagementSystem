@@ -1,39 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 4/19/2026
-  Time: 12:51 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <title>Login</title>
-</head>
-<body>
 
-<h2>User Login</h2>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp" />
 
-<form action="<%= request.getContextPath() %>/login" method="post">
+<!-- ===== Login Page Content ===== -->
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h1 class="auth-card__title">Sign In</h1>
 
-  <label>Contact:</label><br>
-  <input type="text" name="contact" required><br><br>
+    <%
+      String error = (String) request.getAttribute("error");
+      if (error != null) {
+    %>
+    <div class="alert alert--danger"><%= error %></div>
+    <%
+      }
+    %>
 
-  <label>Password:</label><br>
-  <input type="password" name="password" required><br><br>
+    <form action="<%= request.getContextPath() %>/login" method="post">
 
-  <input type="submit" value="Login">
+      <div class="form-group">
+        <label for="identifier">Email or Contact</label>
+        <input id="identifier" class="form-control" type="text" name="identifier"
+               placeholder="Enter your email or contact number" required>
+      </div>
 
-</form>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" class="form-control" type="password" name="password"
+               placeholder="Enter your password" required>
+      </div>
 
-<%
-  String error = (String) request.getAttribute("error");
-  if (error != null) {
-%>
-<p style="color:red;"><%= error %></p>
-<%
-  }
-%>
+      <button type="submit" class="btn btn--primary" style="width:100%;margin-top:.5rem;">Login</button>
+    </form>
 
-</body>
-</html>
+    <p class="auth-card__footer">
+      Don't have an account?
+      <a href="<%= request.getContextPath() %>/register">Register here</a>
+    </p>
+  </div>
+</div>
+
+<jsp:include page="/WEB-INF/templates/footer.jsp" />

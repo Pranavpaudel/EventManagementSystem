@@ -1,43 +1,53 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 4/23/2026
-  Time: 2:22 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-  <title>Add Event</title>
-</head>
-<body>
 
-<h2>Add New Event</h2>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp" />
 
-<form action="<%=request.getContextPath()%>/admin/add-event" method="post">
+<!-- ===== Add Event Content ===== -->
+<h1 class="page-title">Add New Event</h1>
 
-  <label>Event Name:</label><br>
-  <input type="text" name="eventName" required><br><br>
+<div class="card card--centered">
+  <form action="<%= request.getContextPath() %>/admin/add-event" method="post">
 
-  <label>Description:</label><br>
-  <textarea name="description" required></textarea><br><br>
+    <div class="form-group">
+      <label for="eventName">Event Name</label>
+      <input id="eventName" class="form-control" type="text" name="eventName"
+             placeholder="Enter event name" required>
+    </div>
 
-  <label>Event Date:</label><br>
-  <input type="date" name="eventDate" required><br><br>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" class="form-control" name="description"
+                placeholder="Describe the event" required></textarea>
+    </div>
 
-  <label>Event Time:</label><br>
-  <input type="time" name="eventTime" required><br><br>
+    <div class="form-group">
+      <label for="eventDate">Event Date</label>
+      <input id="eventDate" class="form-control" type="date" name="eventDate" required>
+    </div>
 
-  <label>Location:</label><br>
-  <input type="text" name="location" required><br><br>
+    <div class="form-group">
+      <label for="eventTime">Event Time</label>
+      <input id="eventTime" class="form-control" type="time" name="eventTime" required>
+    </div>
 
-  <input type="submit" value="Add Event">
-</form>
+    <div class="form-group">
+      <input type="checkbox" name="isRecurring">Repeat event
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input id="location" class="form-control" type="text" name="location"
+             placeholder="Enter venue / location" required>
+    </div>
+
+    <button type="submit" class="btn btn--primary" style="width:100%;">Add Event</button>
+  </form>
+</div>
 
 <br>
+<a href="<%= request.getContextPath() %>/admin/dashboard" class="btn btn--outline">
+  &larr; Back to Dashboard
+</a>
 
-<!-- Link to SERVLET, not JSP -->
-<a href="<%=request.getContextPath()%>/admin/dashboard">Back to Dashboard</a>
-
-</body>
-</html>
+<jsp:include page="/WEB-INF/templates/footer.jsp" />

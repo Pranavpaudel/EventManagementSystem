@@ -13,9 +13,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-
-@WebServlet("/admin/dashboard")
-public class AdminDashboardServlet extends HttpServlet {
+@WebServlet("/events")
+public class ViewEventsServlet extends HttpServlet {
 
     private final EventDAO eventDAO = new EventDAO();
 
@@ -26,16 +25,16 @@ public class AdminDashboardServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
-        if (user == null || !user.getRole().equals("admin") && !user.getRole().equals("co-admin")){
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
-                    .forward(request, response);
+        // Only logged-in users can access events
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        List<Event> events = eventDAO.getAllEvents();
-        request.setAttribute("events", events);
+        List<Event> upcomingEvents = eventDAO.getAllEvents();
+        request.setAttribute("events", upcomingEvents);
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/admin-dashboard.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/events/view-events.jsp")
                 .forward(request, response);
     }
 }

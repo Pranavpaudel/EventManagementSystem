@@ -6,14 +6,17 @@ import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/events")
-public class ViewEventServlet extends HttpServlet {
+@WebServlet("/events/past")
+public class PastEventsServlet extends HttpServlet {
 
-    private EventDAO eventDAO = new EventDAO();
+    private final EventDAO eventDAO = new EventDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -22,15 +25,16 @@ public class ViewEventServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
+        // Only logged-in users can access past events
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        List<Event> events = eventDAO.getAllEvents();
-        request.setAttribute("events", events);
+        List<Event> pastEvents = eventDAO.getPastEvents();
+        request.setAttribute("events", pastEvents);
 
-        request.getRequestDispatcher("/WEB-INF/views/user/view-events.jsp")
+        request.getRequestDispatcher("/WEB-INF/views/events/past-events.jsp")
                 .forward(request, response);
     }
 }

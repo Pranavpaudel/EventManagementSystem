@@ -22,11 +22,14 @@ public class AddEventServlet extends HttpServlet {
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
         // Admin only
-        if (user == null || !user.getRole().equalsIgnoreCase("admin")) {
+
+        if (!user.getRole().equalsIgnoreCase("admin")
+                && !user.getRole().equalsIgnoreCase("co-admin")) {
             request.getRequestDispatcher("/WEB-INF/views/error.jsp")
                     .forward(request, response);
             return;
         }
+
 
         // Show form
         request.getRequestDispatcher("/WEB-INF/views/admin/add-event.jsp")

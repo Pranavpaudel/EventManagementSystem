@@ -1,56 +1,52 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 4/23/2026
-  Time: 3:01 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.college.eventms.entity.Event" %>
 
-<html>
-<head>
-    <title>Available Events</title>
-</head>
-<body>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp" />
 
-<h2>Available Events</h2>
+<!-- ===== View Events Content ===== -->
+<h1 class="page-title">Available Events</h1>
 
-<table border="1">
+<table class="data-table">
+  <thead>
     <tr>
-        <th>Event Name</th>
-        <th>Description</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Location</th>
+      <th>Event Name</th>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Location</th>
     </tr>
-
+  </thead>
+  <tbody>
     <%
-        List<Event> events = (List<Event>) request.getAttribute("events");
-        if (events != null && !events.isEmpty()) {
-            for (Event event : events) {
+      List<Event> events = (List<Event>) request.getAttribute("events");
+      if (events != null && !events.isEmpty()) {
+        for (Event event : events) {
     %>
     <tr>
-        <td><%= event.getEventName() %></td>
-        <td><%= event.getDescription() %></td>
-        <td><%= event.getEventDate() %></td>
-        <td><%= event.getEventTime() %></td>
-        <td><%= event.getLocation() %></td>
-    </tr>
-    <%
-        }
-    } else {
-    %>
-    <tr>
-        <td colspan="5">No events available</td>
+      <td><%= event.getEventName() %></td>
+      <td><%= event.getDescription() %></td>
+      <td><%= event.getEventDate() %></td>
+      <td><%= event.getEventTime() %></td>
+      <td><%= event.getLocation() %></td>
     </tr>
     <%
         }
+      } else {
     %>
+    <tr class="empty-row">
+      <td colspan="5">No events available at this time.</td>
+    </tr>
+    <%
+      }
+    %>
+  </tbody>
 </table>
 
 <br>
-<a href="<%=request.getContextPath()%>/user-dashboard">Back to Dashboard</a>
+<a href="<%= request.getContextPath() %>/user-dashboard" class="btn btn--outline">
+  &larr; Back to Dashboard
+</a>
 
-</body>
-</html>
+<jsp:include page="/WEB-INF/templates/footer.jsp" />

@@ -25,11 +25,15 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String contact = request.getParameter("contact");
+        String identifier = request.getParameter("identifier");
         String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUserByContact(contact);
+        // Try contact first, then email
+        User user = userDAO.getUserByContact(identifier);
+        if (user == null) {
+            user = userDAO.getUserByEmail(identifier);
+        }
 
         if (user == null) {
             request.setAttribute("error", "User not found");
@@ -56,7 +60,8 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("user", user);
 
 
-        if (user.getRole().equalsIgnoreCase("admin")) {
+        if (user.getRole().equalsIgnoreCase("admin")
+                || user.getRole().equalsIgnoreCase("co-admin")) {
             response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else {
             response.sendRedirect(request.getContextPath() + "/user-dashboard");

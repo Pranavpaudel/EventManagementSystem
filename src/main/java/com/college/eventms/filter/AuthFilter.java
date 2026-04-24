@@ -20,15 +20,17 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         String path = request.getRequestURI();
+        String ctx = request.getContextPath();
 
-        // Allow public routes and static resources
+        // Public routes and static files
         if (path.contains("/login")
                 || path.contains("/register")
                 || path.contains("/static/")
                 || path.endsWith(".css")
                 || path.endsWith(".js")
                 || path.endsWith(".png")
-                || path.endsWith(".jpg")) {
+                || path.endsWith(".jpg")
+                || path.endsWith(".svg")) {
 
             chain.doFilter(request, response);
             return;
@@ -39,25 +41,27 @@ public class AuthFilter implements Filter {
 
         // Not logged in
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(ctx + "/login");
             return;
         }
 
-        // Admin-only URLs
-        if (path.contains("/admin") && !user.getRole().equalsIgnoreCase("admin")) {
+        // Admin & Co-Admin allowed for admin routes
+        if (path.startsWith(ctx + "/admin")
+                && !user.getRole().equalsIgnoreCase("admin")
+                && !user.getRole().equalsIgnoreCase("co-admin")) {
             request.getRequestDispatcher("/WEB-INF/views/error.jsp")
                     .forward(request, response);
             return;
         }
 
-        // User-only dashboard
-        if (path.contains("/user-dashboard") && user.getRole().equalsIgnoreCase("admin")) {
+        // User dashboard allowed ONLY for students
+        if (path.startsWith(ctx + "/user-dashboard")
+                && !user.getRole().equalsIgnoreCase("student")) {
             request.getRequestDispatcher("/WEB-INF/views/error.jsp")
                     .forward(request, response);
             return;
         }
 
-        // Authorized
         chain.doFilter(request, response);
     }
 }

@@ -134,4 +134,32 @@ public class EventDAO {
         return false;
     }
 
+    public List<Event> getPastEvents() {
+
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT * FROM events WHERE event_date < CURRENT_DATE ORDER BY event_date DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Event event = new Event();
+                event.setEventId(rs.getInt("event_id"));
+                event.setEventName(rs.getString("event_name"));
+                event.setDescription(rs.getString("description"));
+                event.setEventDate(rs.getString("event_date"));
+                event.setEventTime(rs.getString("event_time"));
+                event.setLocation(rs.getString("location"));
+                events.add(event);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
+
 }

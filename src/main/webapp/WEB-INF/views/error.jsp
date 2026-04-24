@@ -1,21 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 4/19/2026
-  Time: 2:03 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-  <title>Access Denied</title>
-</head>
-<body>
 
-<h1>Access Denied</h1>
-<p>You are not authorized to access this page.</p>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp" />
 
-<a href="<%= request.getContextPath() %>/login">Go to Login</a>
+<!-- ===== Error Page Content ===== -->
+<div class="error-page">
+  <div class="error-page__icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="15" y1="9" x2="9" y2="15"/>
+      <line x1="9" y1="9" x2="15" y2="15"/>
+    </svg>
+  </div>
+  <h1>Access Denied</h1>
+  <p>You are not authorized to access this page.</p>
+  <a href="<%= request.getContextPath() %>/login" class="btn btn--primary">Go to Login</a>
+</div>
 
-</body>
-</html>
+<jsp:include page="/WEB-INF/templates/footer.jsp" />

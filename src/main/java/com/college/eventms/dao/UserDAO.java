@@ -70,6 +70,37 @@ public class UserDAO {
     }
 
     /* =========================
+       LOGIN SUPPORT (by email)
+       ========================= */
+    public User getUserByEmail(String email) {
+
+        User user = null;
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setContact(rs.getString("contact"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getString("status"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    /* =========================
        ADMIN: VIEW PENDING USERS
        ========================= */
     public List<User> getPendingUsers() {
@@ -118,5 +149,73 @@ public class UserDAO {
         return false;
     }
 
+    /* =========================
+       ADMIN: GET ALL USERS
+       ========================= */
+    public List<User> getAllUsers() {
+
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users ORDER BY user_id";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("user_id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setContact(rs.getString("contact"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(rs.getString("role"));
+                user.setStatus(rs.getString("status"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    /* =========================
+       ADMIN: DELETE USER
+       ========================= */
+    public boolean deleteUser(int userId) {
+
+        String sql = "DELETE FROM users WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /* =========================
+       ADMIN: UPDATE USER ROLE
+       ========================= */
+    public boolean updateUserRole(int userId, String newRole) {
+
+        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, newRole);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
