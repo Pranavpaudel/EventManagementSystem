@@ -51,7 +51,9 @@
       <a href="<%= request.getContextPath() %>/admin/edit-event?eventId=<%= event.getEventId() %>">
         Edit
       </a>
-    </td>
+      <a href="<%= request.getContextPath() %>/admin/delete-event?eventId=<%= event.getEventId() %>" onclick="return confirm('Are you sure you want to delete this event?');">
+      Delete
+    </a></td>
   </tr>
   <%
     }

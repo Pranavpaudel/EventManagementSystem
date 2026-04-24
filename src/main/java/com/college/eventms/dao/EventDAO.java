@@ -117,5 +117,21 @@ public class EventDAO {
 
         return false;
     }
+    public boolean deleteEvent(int eventId) {
+
+        String sql = "DELETE FROM events WHERE event_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, eventId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 }
