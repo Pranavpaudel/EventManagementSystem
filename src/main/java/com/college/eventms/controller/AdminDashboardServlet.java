@@ -1,5 +1,7 @@
 package com.college.eventms.controller;
 
+import com.college.eventms.dao.EventDAO;
+import com.college.eventms.entity.Event;
 import com.college.eventms.entity.User;
 
 import javax.servlet.ServletException;
@@ -9,9 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+
 
 @WebServlet("/admin/dashboard")
 public class AdminDashboardServlet extends HttpServlet {
+
+    private final EventDAO eventDAO = new EventDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -24,6 +31,9 @@ public class AdminDashboardServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
+
+        List<Event> events = eventDAO.getAllEvents();
+        request.setAttribute("events", events);
 
         request.getRequestDispatcher("/WEB-INF/views/admin/admin-dashboard.jsp")
                 .forward(request, response);

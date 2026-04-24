@@ -35,7 +35,9 @@
 </form>
 
 <br>
-<a href="<%=request.getContextPath()%>/admin-dashboard.jsp">Back to Dashboard</a>
+
+<!-- Link to SERVLET, not JSP -->
+<a href="<%=request.getContextPath()%>/admin/dashboard">Back to Dashboard</a>
 
 </body>
 </html>

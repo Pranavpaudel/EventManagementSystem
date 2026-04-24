@@ -20,6 +20,51 @@
 <!-- Link to SERVLET, not JSP -->
 <a href="<%= request.getContextPath() %>/admin/add-event">Add New Event</a>
 <br><br>
+<%@ page import="java.util.List" %>
+<%@ page import="com.college.eventms.entity.Event" %>
+
+<%
+  List<Event> events = (List<Event>) request.getAttribute("events");
+%>
+
+<h3>Manage Events</h3>
+
+<table border="1" cellpadding="5">
+  <tr>
+    <th>Name</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Location</th>
+    <th>Actions</th>
+  </tr>
+
+  <%
+    if (events != null && !events.isEmpty()) {
+      for (Event event : events) {
+  %>
+  <tr>
+    <td><%= event.getEventName() %></td>
+    <td><%= event.getEventDate() %></td>
+    <td><%= event.getEventTime() %></td>
+    <td><%= event.getLocation() %></td>
+    <td>
+      <a href="<%= request.getContextPath() %>/admin/edit-event?eventId=<%= event.getEventId() %>">
+        Edit
+      </a>
+    </td>
+  </tr>
+  <%
+    }
+  } else {
+  %>
+  <tr>
+    <td colspan="5">No events available.</td>
+  </tr>
+  <%
+    }
+  %>
+</table>
+
 
 <%
   String msg = (String) session.getAttribute("successMessage");

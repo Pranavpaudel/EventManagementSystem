@@ -7,6 +7,7 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.college.eventms.entity.User" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
@@ -35,7 +36,7 @@
         <td><%= user.getEmail() %></td>
         <td>
             <form method="post"
-                  action="<%=request.getContextPath()%>/admin/approve-users">
+                  action="<%= request.getContextPath() %>/admin/approve-users">
                 <input type="hidden" name="userId"
                        value="<%= user.getUserId() %>">
                 <input type="submit" value="Approve">
@@ -55,7 +56,9 @@
 </table>
 
 <br>
-<a href="<%=request.getContextPath()%>/admin-dashboard.jsp">Back</a>
+
+<!-- Link to SERVLET, not JSP -->
+<a href="<%= request.getContextPath() %>/admin/dashboard">Back</a>
 
 </body>
 </html>

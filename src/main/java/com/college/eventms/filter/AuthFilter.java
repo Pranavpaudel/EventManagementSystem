@@ -50,7 +50,7 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        // User-only dashboard (optional but recommended)
+        // User-only dashboard
         if (path.contains("/user-dashboard") && user.getRole().equalsIgnoreCase("admin")) {
             request.getRequestDispatcher("/WEB-INF/views/error.jsp")
                     .forward(request, response);

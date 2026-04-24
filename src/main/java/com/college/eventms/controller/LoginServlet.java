@@ -55,8 +55,9 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
 
+
         if (user.getRole().equalsIgnoreCase("admin")) {
-            response.sendRedirect(request.getContextPath() + "/admin-dashboard");
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else {
             response.sendRedirect(request.getContextPath() + "/user-dashboard");
         }

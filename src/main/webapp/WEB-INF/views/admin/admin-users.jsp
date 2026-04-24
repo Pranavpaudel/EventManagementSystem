@@ -56,7 +56,9 @@
 </table>
 
 <br>
-<a href="<%= request.getContextPath() %>/admin-dashboard.jsp">
+
+<!-- Link to SERVLET, not JSP -->
+<a href="<%= request.getContextPath() %>/admin/dashboard">
   Back to Admin Dashboard
 </a>
 

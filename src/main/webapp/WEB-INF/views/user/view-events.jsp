@@ -50,7 +50,7 @@
 </table>
 
 <br>
-<a href="<%=request.getContextPath()%>/user/dashboard">Back to Dashboard</a>
+<a href="<%=request.getContextPath()%>/user-dashboard">Back to Dashboard</a>
 
 </body>
 </html>
