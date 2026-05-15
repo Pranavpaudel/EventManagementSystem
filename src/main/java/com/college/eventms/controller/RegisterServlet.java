@@ -2,6 +2,7 @@ package com.college.eventms.controller;
 
 import com.college.eventms.dao.UserDAO;
 import com.college.eventms.entity.User;
+import com.college.eventms.util.PasswordUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
         user.setFullName(fullName);
         user.setContact(contact);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(PasswordUtil.hashPassword(password));
         user.setRole("student");
         user.setStatus("pending");
 

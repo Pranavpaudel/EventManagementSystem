@@ -2,6 +2,7 @@ package com.college.eventms.controller;
 
 import com.college.eventms.dao.UserDAO;
 import com.college.eventms.entity.User;
+import com.college.eventms.util.PasswordUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +43,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        if (!user.getPassword().equals(password)) {
+        if (!PasswordUtil.verifyPassword(password, user.getPassword())) {
             request.setAttribute("error", "Invalid credentials");
             request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp")
                     .forward(request, response);
