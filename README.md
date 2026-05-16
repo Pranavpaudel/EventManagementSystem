@@ -246,11 +246,23 @@ http://localhost:8080/event-management-system/
 | `/profile-uploads/*` | Serve uploaded profile images   |
 | `/logout`            | End session                     |
 
-## Sample Data
+## Test Accounts
 
-The SQL dump may include sample users. Passwords in the dump may be plain text; the login code supports both BCrypt hashes and plain-text fallback for older records.
+After importing `sql/campus_event_db.sql`, you can log in with these accounts. Use the email or the contact number in the login field.
 
-Create an admin user in the database with `role = 'admin'` and `status = 'approved'`, or approve an existing account through the admin user management page after logging in as an admin.
+**Local URL:** `http://localhost:8082` (or your Tomcat/Cargo port and context path, e.g. `http://localhost:9090/event-management-system/`)
+
+| Role     | Email                      | Password     | Contact    | Status   |
+|----------|----------------------------|--------------|------------|----------|
+| Admin    | admin@cems.com             | Admin@123    | 9999999999 | approved |
+| Co-Admin | coadmin@cems.com           | Coadmin@123  | 88888888   | approved |
+| Student  | firststudent@cems.com      | student@123  | 7777777777 | approved |
+| Student  | studentwithimage@cems.com  | student@123  | 6666666666 | approved |
+| Student  | secondstudent@cems.com     | student@123  | 5555555555 | approved |
+
+Passwords are stored as BCrypt hashes in the database. New registrations use the same hashing; the login code also supports legacy plain-text passwords if any old rows exist.
+
+To add more users, register at `/register` and approve the account from **Admin → Users**, or insert a row in the `users` table with `status = 'approved'`.
 
 ## License
 
