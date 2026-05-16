@@ -2,7 +2,7 @@
   function markInvalid(el, msg) {
     el.style.borderColor = "#e53e3e";
     el.focus();
-    alert(msg);
+    showToast(msg, 'danger');
   }
 
   function clearBorders(form) {
