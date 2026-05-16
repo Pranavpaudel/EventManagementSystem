@@ -41,9 +41,8 @@ public class UserDAO {
     }
 
     /** Looks up a user by their contact number; returns null if not found. */
-    public User getUserByContact(String contact) {
+    public User getUserByContact(String contact) throws SQLException {
 
-        User user = null;
         String sql = "SELECT * FROM users WHERE contact = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -53,7 +52,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                user = new User();
+                User user = new User();
                 user.setUserId(rs.getInt("user_id"));
                 user.setFullName(rs.getString("full_name"));
                 user.setContact(rs.getString("contact"));
@@ -62,18 +61,15 @@ public class UserDAO {
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
                 user.setProfileImage(rs.getString("profile_image"));
+                return user;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return user;
+        return null;
     }
 
     /** Looks up a user by their email address; returns null if not found. */
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(String email) throws SQLException {
 
-        User user = null;
         String sql = "SELECT * FROM users WHERE email = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -83,7 +79,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                user = new User();
+                User user = new User();
                 user.setUserId(rs.getInt("user_id"));
                 user.setFullName(rs.getString("full_name"));
                 user.setContact(rs.getString("contact"));
@@ -92,12 +88,10 @@ public class UserDAO {
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
                 user.setProfileImage(rs.getString("profile_image"));
+                return user;
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return user;
+        return null;
     }
 
     /** Returns all users whose account status is 'pending'. */

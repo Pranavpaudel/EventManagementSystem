@@ -11,6 +11,10 @@
   <div class="auth-card">
     <h1 class="auth-card__title">Create Account</h1>
 
+    <c:if test="${not empty error}">
+      <div class="alert alert--danger">${error}</div>
+    </c:if>
+
     <form id="registerForm" action="${pageContext.request.contextPath}/register" method="post" enctype="multipart/form-data">
 
       <div class="form-group">

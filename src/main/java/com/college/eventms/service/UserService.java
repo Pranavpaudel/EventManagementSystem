@@ -5,6 +5,7 @@ import com.college.eventms.entity.User;
 import com.college.eventms.util.PasswordUtil;
 import com.college.eventms.util.ValidationUtil;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -37,11 +38,16 @@ public class UserService {
         if (password.trim().length() < 6) {
             return "Password must be at least 6 characters.";
         }
-        if (userDAO.getUserByEmail(email) != null) {
-            return "An account with this email already exists.";
-        }
-        if (userDAO.getUserByContact(contact) != null) {
-            return "An account with this contact number already exists.";
+        try {
+            if (userDAO.getUserByEmail(email) != null) {
+                return "An account with this email already exists.";
+            }
+            if (userDAO.getUserByContact(contact) != null) {
+                return "An account with this contact number already exists.";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Registration failed. Please try again.";
         }
 
         User user = new User();
@@ -58,8 +64,13 @@ public class UserService {
 
     /** Finds a user by contact number or email; returns null if not found. */
     public User findByIdentifier(String identifier) {
-        User user = userDAO.getUserByContact(identifier);
-        return user != null ? user : userDAO.getUserByEmail(identifier);
+        try {
+            User user = userDAO.getUserByContact(identifier);
+            return user != null ? user : userDAO.getUserByEmail(identifier);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /** Returns true if the plain-text password matches the stored hash. */

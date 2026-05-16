@@ -4,12 +4,18 @@ import javax.servlet.http.Part;
 import java.io.File;
 
 /**
- * Utility class for uploading and deleting event images stored outside the webapp directory.
+ * Utility class for uploading and deleting event images.
+ * The upload folder is set at webapp startup by UploadPathInitializer.
  */
 public class ImageUtil {
 
-    public static final String UPLOAD_FOLDER =
+    private static String uploadFolder =
             System.getProperty("user.home") + File.separator + "event-uploads" + File.separator;
+
+    /** Called once at startup by UploadPathInitializer to point at uploads/event-uploads inside the webapp. */
+    public static void setUploadFolder(String path) {
+        uploadFolder = path;
+    }
 
     /**
      * Saves an uploaded image part to the upload folder with a timestamp-prefixed filename.
@@ -30,13 +36,13 @@ public class ImageUtil {
                 return null;
             }
 
-            File uploadDir = new File(UPLOAD_FOLDER);
+            File uploadDir = new File(uploadFolder);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
             String uniqueName = System.currentTimeMillis() + "_" + originalName;
-            part.write(UPLOAD_FOLDER + uniqueName);
+            part.write(uploadFolder + uniqueName);
             return uniqueName;
 
         } catch (Exception e) {
@@ -53,7 +59,7 @@ public class ImageUtil {
         if (imagePath == null || imagePath.trim().isEmpty()) return;
         if (imagePath.equals("static/images/default-event.png")) return;
 
-        File file = new File(UPLOAD_FOLDER + imagePath);
+        File file = new File(uploadFolder + imagePath);
         if (file.exists()) {
             file.delete();
         }
@@ -61,6 +67,6 @@ public class ImageUtil {
 
     /** Returns the absolute path to the upload folder. */
     public static String getUploadFolder() {
-        return UPLOAD_FOLDER;
+        return uploadFolder;
     }
 }
