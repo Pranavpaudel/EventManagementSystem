@@ -66,7 +66,7 @@
       <th>Date</th>
       <th>Time</th>
       <th>Location</th>
-      <th>Category</th>
+      <th>Participants</th>
       <th>Capacity</th>
       <th>Actions</th>
     </tr>
