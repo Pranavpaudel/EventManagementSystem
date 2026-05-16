@@ -12,7 +12,13 @@ public class DBConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
-    /** Returns a new connection to the database, or null if the connection fails. */
+    /**
+     * Opens and returns a new JDBC connection to the campus event database.
+     * Exceptions are caught and logged to stderr; callers must null-check the result.
+     *
+     * @return a live {@link Connection}, or {@code null} if the driver cannot be loaded
+     *         or the database is unreachable
+     */
     public static Connection getConnection() {
         Connection con = null;
         try {
@@ -24,7 +30,12 @@ public class DBConnection {
         return con;
     }
 
-    /** Verifies the database connection by printing a status message to stdout. */
+    /**
+     * Smoke-tests the database connection and prints the result to stdout.
+     * Intended for quick connectivity checks during development only.
+     *
+     * @param args unused
+     */
     public static void main(String[] args) {
         Connection con = getConnection();
         if (con != null) {

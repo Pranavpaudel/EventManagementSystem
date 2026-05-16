@@ -14,7 +14,12 @@ import java.util.List;
  */
 public class EventDAO {
 
-    /** Inserts a new event record into the database; returns true on success. */
+    /**
+     * Inserts a new event record into the database.
+     *
+     * @param event the {@link Event} to persist; falls back to the default image if {@code image} is null
+     * @return {@code true} if the row was inserted successfully, {@code false} otherwise
+     */
     public boolean addEvent(Event event) {
 
         String sql = "INSERT INTO events (event_name, description, event_date, event_time, location, image, capacity, category_id, status, created_by) " +
@@ -42,7 +47,11 @@ public class EventDAO {
         return false;
     }
 
-    /** Returns all events in the database. */
+    /**
+     * Returns every event in the database with no filtering applied.
+     *
+     * @return list of all {@link Event} objects; empty list if none exist
+     */
     public List<Event> getAllEvents() {
 
         List<Event> events = new ArrayList<>();
@@ -63,7 +72,12 @@ public class EventDAO {
         return events;
     }
 
-    /** Returns the event with the given ID, or null if not found. */
+    /**
+     * Returns the event with the given ID.
+     *
+     * @param eventId the primary key of the event to retrieve
+     * @return the matching {@link Event}, or {@code null} if no record exists
+     */
     public Event getEventById(int eventId) {
 
         String sql = "SELECT * FROM events WHERE event_id = ?";
@@ -86,7 +100,12 @@ public class EventDAO {
         return event;
     }
 
-    /** Updates all fields of an existing event record; returns true on success. */
+    /**
+     * Updates all editable fields of an existing event record.
+     *
+     * @param event the {@link Event} containing updated values; {@code eventId} must be set
+     * @return {@code true} if the update affected at least one row, {@code false} otherwise
+     */
     public boolean updateEvent(Event event) {
 
         String sql = "UPDATE events SET event_name = ?, description = ?, event_date = ?, event_time = ?, " +
@@ -117,7 +136,12 @@ public class EventDAO {
         return false;
     }
 
-    /** Permanently removes an event record by ID; returns true on success. */
+    /**
+     * Permanently removes an event record by ID. This action is irreversible.
+     *
+     * @param eventId the primary key of the event to delete
+     * @return {@code true} if the row was deleted, {@code false} if no row matched
+     */
     public boolean deleteEvent(int eventId) {
 
         String sql = "DELETE FROM events WHERE event_id = ?";
@@ -135,7 +159,11 @@ public class EventDAO {
         return false;
     }
 
-    /** Returns all events whose date is today or in the future, ordered by date ascending. */
+    /**
+     * Returns all events whose date is today or in the future, ordered by date ascending.
+     *
+     * @return list of upcoming {@link Event} objects; empty list if none
+     */
     public List<Event> getUpcomingEvents() {
 
         List<Event> events = new ArrayList<>();
@@ -156,7 +184,11 @@ public class EventDAO {
         return events;
     }
 
-    /** Returns all events whose date is before today, ordered by date descending. */
+    /**
+     * Returns all events whose date is before today, ordered by date descending.
+     *
+     * @return list of past {@link Event} objects; empty list if none
+     */
     public List<Event> getPastEvents() {
 
         List<Event> events = new ArrayList<>();
@@ -179,7 +211,13 @@ public class EventDAO {
 
     /**
      * Searches upcoming events by keyword, category, and/or date range.
-     * Any parameter may be omitted (null/empty/0).
+     * Any filter parameter may be omitted by passing {@code null}, empty string, or {@code 0}.
+     *
+     * @param keyword    text to match against event name, description, and location (case-insensitive); may be null
+     * @param categoryId category filter; pass {@code 0} to skip
+     * @param dateFrom   lower bound date in {@code yyyy-MM-dd} format; may be null
+     * @param dateTo     upper bound date in {@code yyyy-MM-dd} format; may be null
+     * @return list of matching upcoming {@link Event} objects; empty list if none match
      */
     public List<Event> searchEvents(String keyword, int categoryId, String dateFrom, String dateTo) {
 
@@ -228,7 +266,12 @@ public class EventDAO {
         return events;
     }
 
-    /** Searches events by keyword against name, description, and location fields. */
+    /**
+     * Searches all events (past and upcoming) by keyword against name, description, and location.
+     *
+     * @param keyword the search term; a {@code LIKE} wildcard is applied automatically
+     * @return list of matching {@link Event} objects; empty list if none match
+     */
     public List<Event> searchEvents(String keyword) {
 
         List<Event> events = new ArrayList<>();

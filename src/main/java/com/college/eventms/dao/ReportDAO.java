@@ -17,8 +17,12 @@ import java.util.Map;
 public class ReportDAO {
 
     /**
-     * Returns per-event attendance: event details plus total non-cancelled booking count,
-     * ordered by bookings descending.
+     * Returns per-event attendance data: event details plus total non-cancelled booking count,
+     * ordered by booking count descending.
+     * Each map contains keys: {@code eventId}, {@code eventName}, {@code eventDate},
+     * {@code capacity}, {@code totalBookings}.
+     *
+     * @return list of result maps; empty list if no events exist
      */
     public List<Map<String, Object>> getAttendanceReport() {
 
@@ -50,7 +54,12 @@ public class ReportDAO {
         return rows;
     }
 
-    /** Returns the number of events per category, ordered by count descending. */
+    /**
+     * Returns the number of events per category, ordered by event count descending.
+     * Each map contains keys: {@code categoryName}, {@code eventCount}.
+     *
+     * @return list of result maps; empty list if no categories exist
+     */
     public List<Map<String, Object>> getCategoryBreakdown() {
 
         List<Map<String, Object>> rows = new ArrayList<>();
@@ -76,7 +85,13 @@ public class ReportDAO {
         return rows;
     }
 
-    /** Returns a single-row summary: totalUsers, totalEvents, totalBookings, pendingUsers. */
+    /**
+     * Returns a single-row summary of platform-wide statistics.
+     * The map contains keys: {@code totalUsers}, {@code totalEvents},
+     * {@code totalBookings} (non-cancelled), {@code pendingUsers}.
+     *
+     * @return a map of aggregate stats; values default to {@code 0} on query failure
+     */
     public Map<String, Object> getSummaryStats() {
 
         Map<String, Object> stats = new HashMap<>();

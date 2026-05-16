@@ -66,6 +66,7 @@
       <th>Date</th>
       <th>Time</th>
       <th>Location</th>
+      <th>Category</th>
       <th>Participants</th>
       <th>Capacity</th>
       <th>Actions</th>
@@ -90,7 +91,8 @@
       <td>${event.eventDate}</td>
       <td>${event.eventTime}</td>
       <td>${event.location}</td>
-      <td>${event.categoryId}</td>
+      <td>${categoryNames[event.categoryId]}</td>
+      <td>${bookingCounts[event.eventId]}</td>
       <td>${event.capacity}</td>
       <td>
         <a class="action-link action-link--edit"
@@ -99,7 +101,7 @@
         </a>
         <a class="action-link action-link--delete"
            href="${pageContext.request.contextPath}/admin/delete-event?eventId=${event.eventId}"
-           onclick="return confirm('Are you sure you want to delete this event?');">
+           onclick="event.preventDefault(); var url=this.href; showConfirm('Delete Event','Are you sure you want to delete this event? This action cannot be undone.',function(){ window.location.href=url; }); return false;">
           Delete
         </a>
       </td>

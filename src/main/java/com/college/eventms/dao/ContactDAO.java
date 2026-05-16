@@ -15,7 +15,14 @@ import java.util.List;
  */
 public class ContactDAO {
 
-    /** Saves a contact form submission to the database; returns true on success. */
+    /**
+     * Saves a contact form submission to the database.
+     *
+     * @param name    the sender's full name
+     * @param email   the sender's email address
+     * @param message the body of the contact message
+     * @return {@code true} if the row was inserted successfully, {@code false} otherwise
+     */
     public boolean saveMessage(String name, String email, String message) {
 
         String sql = "INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)";
@@ -35,7 +42,11 @@ public class ContactDAO {
         return false;
     }
 
-    /** Returns all contact messages ordered by submission date descending. */
+    /**
+     * Returns all contact form submissions ordered by submission date descending (newest first).
+     *
+     * @return list of {@link ContactMessage} objects; empty list if none exist
+     */
     public List<ContactMessage> getAllMessages() {
 
         List<ContactMessage> messages = new ArrayList<>();

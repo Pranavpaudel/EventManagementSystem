@@ -12,15 +12,24 @@ public class ImageUtil {
     private static String uploadFolder =
             System.getProperty("user.home") + File.separator + "event-uploads" + File.separator;
 
-    /** Called once at startup by UploadPathInitializer to point at uploads/event-uploads inside the webapp. */
+    /**
+     * Overrides the default upload folder path. Called once at webapp startup by
+     * {@link UploadPathInitializer} to point at {@code uploads/event-uploads} inside the
+     * deployed webapp root.
+     *
+     * @param path absolute filesystem path (with trailing separator) to the event-uploads folder
+     */
     public static void setUploadFolder(String path) {
         uploadFolder = path;
     }
 
     /**
-     * Saves an uploaded image part to the upload folder with a timestamp-prefixed filename.
+     * Saves the submitted image file to the event-uploads folder using a
+     * {@code <timestamp>_<originalName>} filename to guarantee uniqueness.
      *
-     * @return the unique filename on success, or null if no valid image was submitted.
+     * @param part the {@code multipart/form-data} file part from the servlet request
+     * @return the generated filename (e.g. {@code 1715000000000_photo.jpg}) on success,
+     *         or {@code null} if the part is absent, empty, or not a supported image type
      */
     public static String uploadImage(Part part) {
         try {
@@ -52,8 +61,10 @@ public class ImageUtil {
     }
 
     /**
-     * Deletes an image file from the upload folder.
-     * Does nothing if the path is null, empty, or the shared default image.
+     * Deletes an image file from the event-uploads folder.
+     * No-ops silently if {@code imagePath} is null, blank, or the shared default placeholder.
+     *
+     * @param imagePath the filename stored in the database (not an absolute path)
      */
     public static void deleteImage(String imagePath) {
         if (imagePath == null || imagePath.trim().isEmpty()) return;
@@ -65,7 +76,11 @@ public class ImageUtil {
         }
     }
 
-    /** Returns the absolute path to the upload folder. */
+    /**
+     * Returns the absolute filesystem path of the event-uploads folder (includes trailing separator).
+     *
+     * @return the current upload folder path
+     */
     public static String getUploadFolder() {
         return uploadFolder;
     }

@@ -15,7 +15,12 @@ import java.util.List;
  */
 public class UserDAO {
 
-    /** Inserts a new user record into the database; returns true on success. */
+    /**
+     * Inserts a new user record into the database.
+     *
+     * @param user the {@link User} to persist; password must already be hashed
+     * @return {@code true} if the row was inserted successfully, {@code false} otherwise
+     */
     public boolean registerUser(User user) {
 
         String sql = "INSERT INTO users (full_name, contact, email, password, role, status, profile_image) " +
@@ -40,7 +45,13 @@ public class UserDAO {
         return false;
     }
 
-    /** Looks up a user by their contact number; returns null if not found. */
+    /**
+     * Looks up a user by their contact number.
+     *
+     * @param contact the contact number to search for
+     * @return the matching {@link User}, or {@code null} if no record exists
+     * @throws SQLException if the database query fails
+     */
     public User getUserByContact(String contact) throws SQLException {
 
         String sql = "SELECT * FROM users WHERE contact = ?";
@@ -67,7 +78,13 @@ public class UserDAO {
         return null;
     }
 
-    /** Looks up a user by their email address; returns null if not found. */
+    /**
+     * Looks up a user by their email address.
+     *
+     * @param email the email address to search for
+     * @return the matching {@link User}, or {@code null} if no record exists
+     * @throws SQLException if the database query fails
+     */
     public User getUserByEmail(String email) throws SQLException {
 
         String sql = "SELECT * FROM users WHERE email = ?";
@@ -94,7 +111,11 @@ public class UserDAO {
         return null;
     }
 
-    /** Returns all users whose account status is 'pending'. */
+    /**
+     * Returns all users whose account status is {@code pending} (awaiting admin approval).
+     *
+     * @return list of pending {@link User} objects; empty list if none
+     */
     public List<User> getPendingUsers() {
 
         List<User> users = new ArrayList<>();
@@ -123,7 +144,12 @@ public class UserDAO {
         return users;
     }
 
-    /** Sets a user's status to 'approved'; returns true on success. */
+    /**
+     * Sets a user's status to {@code approved}, granting login access.
+     *
+     * @param userId the ID of the user to approve
+     * @return {@code true} if the update affected at least one row, {@code false} otherwise
+     */
     public boolean approveUser(int userId) {
 
         String sql = "UPDATE users SET status = 'approved' WHERE user_id = ?";
@@ -140,7 +166,11 @@ public class UserDAO {
         return false;
     }
 
-    /** Returns all users in the system ordered by user_id. */
+    /**
+     * Returns all users in the system ordered by {@code user_id} ascending.
+     *
+     * @return list of all {@link User} objects; empty list if the table is empty
+     */
     public List<User> getAllUsers() {
 
         List<User> users = new ArrayList<>();
@@ -169,7 +199,12 @@ public class UserDAO {
         return users;
     }
 
-    /** Permanently deletes a user record by ID; returns true on success. */
+    /**
+     * Permanently deletes a user record by ID. This action is irreversible.
+     *
+     * @param userId the ID of the user to delete
+     * @return {@code true} if the row was deleted, {@code false} if no row matched
+     */
     public boolean deleteUser(int userId) {
 
         String sql = "DELETE FROM users WHERE user_id = ?";
@@ -186,7 +221,12 @@ public class UserDAO {
         return false;
     }
 
-    /** Updates a user's full name, contact, and email; returns true on success. */
+    /**
+     * Updates a user's full name, contact number, email, and profile image.
+     *
+     * @param user the {@link User} containing updated field values; {@code userId} must be set
+     * @return {@code true} if the update succeeded, {@code false} otherwise
+     */
     public boolean updateUser(User user) {
 
         String sql = "UPDATE users SET full_name = ?, contact = ?, email = ?, profile_image = ? WHERE user_id = ?";
@@ -207,7 +247,13 @@ public class UserDAO {
         return false;
     }
 
-    /** Changes the role of the specified user to the given new role; returns true on success. */
+    /**
+     * Changes the role of the specified user.
+     *
+     * @param userId  the ID of the user whose role should change
+     * @param newRole the new role string (e.g. {@code "admin"}, {@code "co-admin"}, {@code "student"})
+     * @return {@code true} if the update succeeded, {@code false} otherwise
+     */
     public boolean updateUserRole(int userId, String newRole) {
 
         String sql = "UPDATE users SET role = ? WHERE user_id = ?";

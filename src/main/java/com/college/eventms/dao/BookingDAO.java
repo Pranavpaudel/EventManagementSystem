@@ -15,7 +15,13 @@ import java.util.List;
  */
 public class BookingDAO {
 
-    /** Inserts a new booking for the given user and event; returns true on success. */
+    /**
+     * Inserts a new booking record linking a user to an event.
+     *
+     * @param userId  the ID of the user making the booking
+     * @param eventId the ID of the event being booked
+     * @return {@code true} if the row was inserted successfully, {@code false} otherwise
+     */
     public boolean insertBooking(int userId, int eventId) {
 
         String sql = "INSERT INTO bookings (user_id, event_id) VALUES (?, ?)";
@@ -34,7 +40,12 @@ public class BookingDAO {
         return false;
     }
 
-    /** Returns all bookings belonging to the specified user. */
+    /**
+     * Returns all bookings belonging to the specified user, regardless of status.
+     *
+     * @param userId the ID of the user whose bookings to fetch
+     * @return list of {@link Booking} objects; empty list if the user has no bookings
+     */
     public List<Booking> getBookingsByUser(int userId) {
 
         List<Booking> bookings = new ArrayList<>();
@@ -57,7 +68,12 @@ public class BookingDAO {
         return bookings;
     }
 
-    /** Returns all bookings for the specified event. */
+    /**
+     * Returns all bookings for the specified event, regardless of status.
+     *
+     * @param eventId the ID of the event whose bookings to fetch
+     * @return list of {@link Booking} objects; empty list if the event has no bookings
+     */
     public List<Booking> getBookingsByEvent(int eventId) {
 
         List<Booking> bookings = new ArrayList<>();
@@ -80,7 +96,12 @@ public class BookingDAO {
         return bookings;
     }
 
-    /** Sets a booking's status to CANCELLED; returns true on success. */
+    /**
+     * Sets a booking's status to {@code CANCELLED}.
+     *
+     * @param bookingId the ID of the booking to cancel
+     * @return {@code true} if the update affected at least one row, {@code false} otherwise
+     */
     public boolean cancelBooking(int bookingId) {
 
         String sql = "UPDATE bookings SET status = 'CANCELLED' WHERE booking_id = ?";
@@ -98,12 +119,23 @@ public class BookingDAO {
         return false;
     }
 
-    /** Returns the number of non-cancelled bookings for the given event (alias used by JSP maps). */
+    /**
+     * Returns the number of active (non-cancelled) bookings for the given event.
+     * This is an alias of {@link #getActiveBookingCountByEvent(int)} used by JSP EL maps.
+     *
+     * @param eventId the ID of the event to count bookings for
+     * @return the active booking count; {@code 0} on error or if none exist
+     */
     public int getBookingCount(int eventId) {
         return getActiveBookingCountByEvent(eventId);
     }
 
-    /** Returns the number of non-cancelled bookings for the given event. */
+    /**
+     * Returns the number of non-cancelled bookings for the given event.
+     *
+     * @param eventId the ID of the event to count bookings for
+     * @return the active booking count; {@code 0} on error or if none exist
+     */
     public int getActiveBookingCountByEvent(int eventId) {
 
         String sql = "SELECT COUNT(*) FROM bookings WHERE event_id = ? AND status != 'CANCELLED'";
@@ -121,7 +153,14 @@ public class BookingDAO {
         return 0;
     }
 
-    /** Returns true if the user has an active (non-cancelled) booking for the event. */
+    /**
+     * Returns {@code true} if the user already has an active (non-cancelled) booking for the event.
+     * Used to prevent duplicate bookings.
+     *
+     * @param userId  the ID of the user to check
+     * @param eventId the ID of the event to check
+     * @return {@code true} if an active booking exists, {@code false} otherwise
+     */
     public boolean isAlreadyBooked(int userId, int eventId) {
 
         String sql = "SELECT COUNT(*) FROM bookings WHERE user_id = ? AND event_id = ? AND status != 'CANCELLED'";
@@ -144,7 +183,13 @@ public class BookingDAO {
         return false;
     }
 
-    /** Returns bookings for the specified user joined with event details (name, date, time, location). */
+    /**
+     * Returns bookings for the specified user enriched with event details
+     * (event name, date, time, and location) via a JOIN, ordered by booking date descending.
+     *
+     * @param userId the ID of the user whose bookings to fetch
+     * @return list of {@link Booking} objects with event fields populated; empty list if none
+     */
     public List<Booking> getBookingsByUserWithEvent(int userId) {
 
         List<Booking> bookings = new ArrayList<>();

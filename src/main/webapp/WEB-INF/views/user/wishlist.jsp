@@ -47,10 +47,10 @@
               <input type="hidden" name="eventId" value="${event.eventId}">
               <button type="submit" class="btn btn--primary btn--sm">Register</button>
             </form>
-            <form action="${ctx}/wishlist/remove" method="post" style="display:inline;">
+            <form id="removeForm${event.eventId}" action="${ctx}/wishlist/remove" method="post" style="display:inline;">
               <input type="hidden" name="eventId" value="${event.eventId}">
-              <button type="submit" class="btn btn--danger btn--sm"
-                      onclick="return confirm('Remove from wishlist?')">Remove</button>
+              <button type="button" class="btn btn--danger btn--sm"
+                      onclick="showConfirm('Remove from Wishlist','Remove this event from your wishlist?',function(){ document.getElementById('removeForm${event.eventId}').submit(); })">Remove</button>
             </form>
           </td>
         </tr>

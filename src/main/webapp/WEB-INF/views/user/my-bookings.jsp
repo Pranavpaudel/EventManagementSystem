@@ -41,10 +41,10 @@
       <td>${booking.status}</td>
       <td>
         <c:if test="${booking.status != 'CANCELLED'}">
-          <form action="${ctx}/cancel-booking" method="post" style="display:inline;">
+          <form id="cancelForm${booking.bookingId}" action="${ctx}/cancel-booking" method="post" style="display:inline;">
             <input type="hidden" name="bookingId" value="${booking.bookingId}">
-            <button type="submit" class="btn btn--danger btn--sm"
-                    onclick="return confirm('Cancel this booking?')">Cancel</button>
+            <button type="button" class="btn btn--danger btn--sm"
+                    onclick="showConfirm('Cancel Booking','Are you sure you want to cancel this booking?',function(){ document.getElementById('cancelForm${booking.bookingId}').submit(); })">Cancel</button>
           </form>
         </c:if>
         <c:if test="${booking.status == 'CANCELLED'}">

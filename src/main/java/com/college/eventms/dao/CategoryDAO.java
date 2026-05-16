@@ -15,7 +15,11 @@ import java.util.List;
  */
 public class CategoryDAO {
 
-    /** Returns all categories in the database. */
+    /**
+     * Returns every category in the database.
+     *
+     * @return list of all {@link Category} objects; empty list if none exist
+     */
     public List<Category> getAllCategories() {
 
         List<Category> categories = new ArrayList<>();
@@ -36,7 +40,12 @@ public class CategoryDAO {
         return categories;
     }
 
-    /** Returns the category with the given ID, or null if not found. */
+    /**
+     * Returns the category with the given ID.
+     *
+     * @param categoryId the primary key of the category to retrieve
+     * @return the matching {@link Category}, or {@code null} if no record exists
+     */
     public Category getCategoryById(int categoryId) {
 
         String sql = "SELECT * FROM categories WHERE category_id = ?";
@@ -59,7 +68,13 @@ public class CategoryDAO {
         return category;
     }
 
-    /** Inserts a new category with the given name and description; returns true on success. */
+    /**
+     * Inserts a new category with the given name and description.
+     *
+     * @param name        the display name of the category
+     * @param description a short description of the category
+     * @return {@code true} if the row was inserted successfully, {@code false} otherwise
+     */
     public boolean insertCategory(String name, String description) {
 
         String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
@@ -78,7 +93,12 @@ public class CategoryDAO {
         return false;
     }
 
-    /** Updates an existing category's name and description; returns true on success. */
+    /**
+     * Updates an existing category's name and description.
+     *
+     * @param category the {@link Category} with updated values; {@code categoryId} must be set
+     * @return {@code true} if the update succeeded, {@code false} otherwise
+     */
     public boolean updateCategory(Category category) {
 
         String sql = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?";
@@ -98,7 +118,12 @@ public class CategoryDAO {
         return false;
     }
 
-    /** Permanently deletes a category by ID; returns true on success. */
+    /**
+     * Permanently deletes a category by ID. This action is irreversible.
+     *
+     * @param categoryId the primary key of the category to delete
+     * @return {@code true} if the row was deleted, {@code false} if no row matched
+     */
     public boolean deleteCategory(int categoryId) {
 
         String sql = "DELETE FROM categories WHERE category_id = ?";

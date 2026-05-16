@@ -12,15 +12,24 @@ public class ProfileImageUtil {
     private static String uploadFolder =
             System.getProperty("user.home") + File.separator + "profile-uploads" + File.separator;
 
-    /** Called once at startup by UploadPathInitializer to point at uploads/profile-uploads inside the webapp. */
+    /**
+     * Overrides the default upload folder path. Called once at webapp startup by
+     * {@link UploadPathInitializer} to point at {@code uploads/profile-uploads} inside the
+     * deployed webapp root.
+     *
+     * @param path absolute filesystem path (with trailing separator) to the profile-uploads folder
+     */
     public static void setUploadFolder(String path) {
         uploadFolder = path;
     }
 
     /**
-     * Saves an uploaded profile image part with a timestamp-prefixed filename.
+     * Saves the submitted profile image to the profile-uploads folder using a
+     * {@code <timestamp>_<originalName>} filename to guarantee uniqueness.
      *
-     * @return the unique filename on success, or null if no valid image was submitted.
+     * @param part the {@code multipart/form-data} file part from the servlet request
+     * @return the generated filename (e.g. {@code 1715000000000_avatar.png}) on success,
+     *         or {@code null} if the part is absent, empty, or not a supported image type
      */
     public static String uploadImage(Part part) {
         try {
@@ -52,8 +61,10 @@ public class ProfileImageUtil {
     }
 
     /**
-     * Deletes a profile image file from the upload folder.
-     * Does nothing if the path is null, empty, or the shared default avatar.
+     * Deletes a profile image file from the profile-uploads folder.
+     * No-ops silently if {@code imagePath} is null, blank, or the shared default avatar placeholder.
+     *
+     * @param imagePath the filename stored in the database (not an absolute path)
      */
     public static void deleteImage(String imagePath) {
         if (imagePath == null || imagePath.trim().isEmpty()) return;
@@ -65,7 +76,11 @@ public class ProfileImageUtil {
         }
     }
 
-    /** Returns the absolute path to the profile upload folder. */
+    /**
+     * Returns the absolute filesystem path of the profile-uploads folder (includes trailing separator).
+     *
+     * @return the current upload folder path
+     */
     public static String getUploadFolder() {
         return uploadFolder;
     }
