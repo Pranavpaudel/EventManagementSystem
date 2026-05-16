@@ -1,7 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/templates/header.jsp" />
 <jsp:include page="/WEB-INF/templates/nav.jsp" />
+
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!-- ===== Registration Success Content ===== -->
 <div class="success-page">
@@ -13,7 +16,7 @@
   </div>
   <h2>Registration Successful!</h2>
   <p>Your account has been created and is pending approval by an administrator.</p>
-  <a href="<%= request.getContextPath() %>/login" class="btn btn--primary">Go to Login</a>
+  <a href="${pageContext.request.contextPath}/login" class="btn btn--primary">Go to Login</a>
 </div>
 
 <jsp:include page="/WEB-INF/templates/footer.jsp" />

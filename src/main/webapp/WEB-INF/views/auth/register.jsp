@@ -1,14 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/templates/header.jsp" />
 <jsp:include page="/WEB-INF/templates/nav.jsp" />
+
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <!-- ===== Register Page Content ===== -->
 <div class="auth-wrapper">
   <div class="auth-card">
     <h1 class="auth-card__title">Create Account</h1>
 
-    <form action="<%= request.getContextPath() %>/register" method="post">
+    <form id="registerForm" action="${pageContext.request.contextPath}/register" method="post" enctype="multipart/form-data">
 
       <div class="form-group">
         <label for="fullName">Full Name</label>
@@ -29,6 +32,12 @@
       </div>
 
       <div class="form-group">
+        <label for="profileImage">Profile Picture</label>
+        <input id="profileImage" class="form-control" type="file" name="profileImage"
+               accept=".jpg,.jpeg,.png">
+      </div>
+
+      <div class="form-group">
         <label for="password">Password</label>
         <input id="password" class="form-control" type="password" name="password"
                placeholder="Create a password" required>
@@ -39,7 +48,7 @@
 
     <p class="auth-card__footer">
       Already have an account?
-      <a href="<%= request.getContextPath() %>/login">Sign in</a>
+      <a href="${pageContext.request.contextPath}/login">Sign in</a>
     </p>
   </div>
 </div>

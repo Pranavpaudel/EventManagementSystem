@@ -1,19 +1,18 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.college.eventms.entity.User" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    User headerUser = (User) session.getAttribute("user");
-    String homeUrl;
-
-    if (headerUser == null) {
-        homeUrl = request.getContextPath() + "/login";
-    } else if ("admin".equalsIgnoreCase(headerUser.getRole())
-            || "co-admin".equalsIgnoreCase(headerUser.getRole())) {
-        homeUrl = request.getContextPath() + "/admin/dashboard";
-    } else {
-        homeUrl = request.getContextPath() + "/user-dashboard";
-    }
-%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<c:choose>
+  <c:when test="${empty sessionScope.user}">
+    <c:set var="homeUrl" value="${pageContext.request.contextPath}/login" />
+  </c:when>
+  <c:when test="${sessionScope.user.role.toLowerCase() eq 'admin' or sessionScope.user.role.toLowerCase() eq 'co-admin'}">
+    <c:set var="homeUrl" value="${pageContext.request.contextPath}/admin/dashboard" />
+  </c:when>
+  <c:otherwise>
+    <c:set var="homeUrl" value="${pageContext.request.contextPath}/user-dashboard" />
+  </c:otherwise>
+</c:choose>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,13 +20,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Event Management System — Manage and browse college events">
   <title>Event Management System</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/style.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
 </head>
 <body>
 
 <!-- ===== HEADER ===== -->
 <header class="site-header">
-  <a href="<%= homeUrl %>" class="site-header__logo">
+  <a href="${homeUrl}" class="site-header__logo">
     <!-- Calendar / Event icon -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

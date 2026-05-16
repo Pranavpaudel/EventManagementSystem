@@ -10,15 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Access Object for the users table — provides CRUD operations and role management.
+ */
 public class UserDAO {
 
-    /* =========================
-       REGISTER USER
-       ========================= */
+    /** Inserts a new user record into the database; returns true on success. */
     public boolean registerUser(User user) {
 
-        String sql = "INSERT INTO users (full_name, contact, email, password, role, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (full_name, contact, email, password, role, status, profile_image) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -29,6 +30,7 @@ public class UserDAO {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRole());
             ps.setString(6, user.getStatus());
+            ps.setString(7, user.getProfileImage() != null ? user.getProfileImage() : "static/images/default-avatar.png");
 
             return ps.executeUpdate() > 0;
 
@@ -38,9 +40,7 @@ public class UserDAO {
         return false;
     }
 
-    /* =========================
-       LOGIN SUPPORT
-       ========================= */
+    /** Looks up a user by their contact number; returns null if not found. */
     public User getUserByContact(String contact) {
 
         User user = null;
@@ -61,6 +61,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
+                user.setProfileImage(rs.getString("profile_image"));
             }
 
         } catch (SQLException e) {
@@ -69,9 +70,7 @@ public class UserDAO {
         return user;
     }
 
-    /* =========================
-       LOGIN SUPPORT (by email)
-       ========================= */
+    /** Looks up a user by their email address; returns null if not found. */
     public User getUserByEmail(String email) {
 
         User user = null;
@@ -92,6 +91,7 @@ public class UserDAO {
                 user.setPassword(rs.getString("password"));
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
+                user.setProfileImage(rs.getString("profile_image"));
             }
 
         } catch (SQLException e) {
@@ -100,9 +100,7 @@ public class UserDAO {
         return user;
     }
 
-    /* =========================
-       ADMIN: VIEW PENDING USERS
-       ========================= */
+    /** Returns all users whose account status is 'pending'. */
     public List<User> getPendingUsers() {
 
         List<User> users = new ArrayList<>();
@@ -120,6 +118,7 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
+                user.setProfileImage(rs.getString("profile_image"));
                 users.add(user);
             }
 
@@ -130,9 +129,7 @@ public class UserDAO {
         return users;
     }
 
-    /* =========================
-       ADMIN: APPROVE USER
-       ========================= */
+    /** Sets a user's status to 'approved'; returns true on success. */
     public boolean approveUser(int userId) {
 
         String sql = "UPDATE users SET status = 'approved' WHERE user_id = ?";
@@ -149,9 +146,7 @@ public class UserDAO {
         return false;
     }
 
-    /* =========================
-       ADMIN: GET ALL USERS
-       ========================= */
+    /** Returns all users in the system ordered by user_id. */
     public List<User> getAllUsers() {
 
         List<User> users = new ArrayList<>();
@@ -169,6 +164,7 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setRole(rs.getString("role"));
                 user.setStatus(rs.getString("status"));
+                user.setProfileImage(rs.getString("profile_image"));
                 users.add(user);
             }
 
@@ -179,9 +175,7 @@ public class UserDAO {
         return users;
     }
 
-    /* =========================
-       ADMIN: DELETE USER
-       ========================= */
+    /** Permanently deletes a user record by ID; returns true on success. */
     public boolean deleteUser(int userId) {
 
         String sql = "DELETE FROM users WHERE user_id = ?";
@@ -198,9 +192,28 @@ public class UserDAO {
         return false;
     }
 
-    /* =========================
-       ADMIN: UPDATE USER ROLE
-       ========================= */
+    /** Updates a user's full name, contact, and email; returns true on success. */
+    public boolean updateUser(User user) {
+
+        String sql = "UPDATE users SET full_name = ?, contact = ?, email = ?, profile_image = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getContact());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getProfileImage() != null ? user.getProfileImage() : "static/images/default-avatar.png");
+            ps.setInt(5, user.getUserId());
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /** Changes the role of the specified user to the given new role; returns true on success. */
     public boolean updateUserRole(int userId, String newRole) {
 
         String sql = "UPDATE users SET role = ? WHERE user_id = ?";

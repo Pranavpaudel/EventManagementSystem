@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/templates/header.jsp" />
 <jsp:include page="/WEB-INF/templates/nav.jsp" />
@@ -15,7 +16,7 @@
   </div>
   <h1>Access Denied</h1>
   <p>You are not authorized to access this page.</p>
-  <a href="<%= request.getContextPath() %>/login" class="btn btn--primary">Go to Login</a>
+  <a href="${pageContext.request.contextPath}/login" class="btn btn--primary">Go to Login</a>
 </div>
 
 <jsp:include page="/WEB-INF/templates/footer.jsp" />

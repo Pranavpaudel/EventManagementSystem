@@ -1,52 +1,54 @@
 package com.college.eventms.controller;
 
-import com.college.eventms.dao.UserDAO;
-import com.college.eventms.entity.User;
-import com.college.eventms.util.PasswordUtil;
+import com.college.eventms.service.UserService;
+import com.college.eventms.util.ProfileImageUtil;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
+/**
+ * Handles new user registration — shows the registration form on GET and creates the account on POST.
+ */
 @WebServlet("/register")
+@MultipartConfig
 public class RegisterServlet extends HttpServlet {
+
+    private static final String REGISTER_VIEW = "/WEB-INF/views/auth/register.jsp";
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher(REGISTER_VIEW).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String fullName = request.getParameter("fullName");
-        String contact = request.getParameter("contact");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        Part imagePart = request.getPart("profileImage");
+        String profileImage = ProfileImageUtil.uploadImage(imagePart);
+        if (profileImage == null) {
+            profileImage = "static/images/default-avatar.png";
+        }
 
-        User user = new User();
-        user.setFullName(fullName);
-        user.setContact(contact);
-        user.setEmail(email);
-        user.setPassword(PasswordUtil.hashPassword(password));
-        user.setRole("student");
-        user.setStatus("pending");
+        String error = userService.registerUser(
+                request.getParameter("fullName"),
+                request.getParameter("contact"),
+                request.getParameter("email"),
+                request.getParameter("password"),
+                profileImage
+        );
 
-        UserDAO userDAO = new UserDAO();
-        boolean isRegistered = userDAO.registerUser(user);
-
-        if (isRegistered) {
-            // Redirect to a servlet, not JSP
-            response.sendRedirect(request.getContextPath() + "/login");
+        if (error != null) {
+            request.setAttribute("error", error);
+            request.getRequestDispatcher(REGISTER_VIEW).forward(request, response);
         } else {
-            request.setAttribute("error", "Registration failed. Please try again.");
-            request.getRequestDispatcher("/WEB-INF/views/auth/register.jsp")
-                    .forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 }

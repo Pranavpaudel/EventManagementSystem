@@ -1,13 +1,20 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="/WEB-INF/templates/header.jsp" />
 <jsp:include page="/WEB-INF/templates/nav.jsp" />
 
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+
 <!-- ===== Add Event Content ===== -->
 <h1 class="page-title">Add New Event</h1>
 
+<c:if test="${not empty error}">
+  <div class="alert alert--danger">${error}</div>
+</c:if>
+
 <div class="card card--centered">
-  <form action="<%= request.getContextPath() %>/admin/add-event" method="post">
+  <form id="addEventForm" action="${ctx}/admin/add-event" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
       <label for="eventName">Event Name</label>
@@ -32,7 +39,19 @@
     </div>
 
     <div class="form-group">
-      <input type="checkbox" name="isRecurring">Repeat event
+      <label for="capacity">Capacity</label>
+      <input id="capacity" class="form-control" type="number" name="capacity"
+             placeholder="Maximum number of attendees" min="1" required>
+    </div>
+
+    <div class="form-group">
+      <label for="categoryId">Category</label>
+      <select id="categoryId" class="form-control" name="categoryId" required>
+        <option value="">-- Select Category --</option>
+        <c:forEach var="cat" items="${categories}">
+          <option value="${cat.categoryId}">${cat.name}</option>
+        </c:forEach>
+      </select>
     </div>
 
     <div class="form-group">
@@ -41,13 +60,16 @@
              placeholder="Enter venue / location" required>
     </div>
 
+    <div class="form-group">
+      <label for="image">Event Image</label>
+      <input id="image" class="form-control" type="file" name="image" accept=".jpg,.jpeg,.png">
+    </div>
+
     <button type="submit" class="btn btn--primary" style="width:100%;">Add Event</button>
   </form>
 </div>
 
 <br>
-<a href="<%= request.getContextPath() %>/admin/dashboard" class="btn btn--outline">
-  &larr; Back to Dashboard
-</a>
+<a href="${ctx}/admin/dashboard" class="btn btn--outline">&larr; Back to Dashboard</a>
 
 <jsp:include page="/WEB-INF/templates/footer.jsp" />

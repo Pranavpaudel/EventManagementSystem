@@ -1,5 +1,8 @@
 package com.college.eventms.entity;
 
+/**
+ * Entity class representing a system user (student, co-admin, or admin).
+ */
 public class User {
 
     private int userId;
@@ -9,12 +12,13 @@ public class User {
     private String password;
     private String role;
     private String status;
+    private String dob;
+    private String createdAt;
+    private String profileImage;
 
-    // Empty constructor
     public User() {
     }
 
-    // Getters and Setters
     public int getUserId() {
         return userId;
     }
@@ -69,5 +73,29 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

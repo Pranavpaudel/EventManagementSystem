@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Global authentication filter applied to all URLs — redirects unauthenticated users to /login
+ * and blocks unauthorised role access to /admin/* and /user-dashboard.
+ */
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
@@ -25,7 +29,11 @@ public class AuthFilter implements Filter {
         // Public routes and static files
         if (path.contains("/login")
                 || path.contains("/register")
+                || path.contains("/contact")
+                || path.contains("/about")
                 || path.contains("/static/")
+                || path.contains("/event-uploads/")
+                || path.contains("/profile-uploads/")
                 || path.endsWith(".css")
                 || path.endsWith(".js")
                 || path.endsWith(".png")
@@ -49,7 +57,7 @@ public class AuthFilter implements Filter {
         if (path.startsWith(ctx + "/admin")
                 && !user.getRole().equalsIgnoreCase("admin")
                 && !user.getRole().equalsIgnoreCase("co-admin")) {
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/accessDenied.jsp")
                     .forward(request, response);
             return;
         }
@@ -57,7 +65,7 @@ public class AuthFilter implements Filter {
         // User dashboard allowed ONLY for students
         if (path.startsWith(ctx + "/user-dashboard")
                 && !user.getRole().equalsIgnoreCase("student")) {
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/accessDenied.jsp")
                     .forward(request, response);
             return;
         }

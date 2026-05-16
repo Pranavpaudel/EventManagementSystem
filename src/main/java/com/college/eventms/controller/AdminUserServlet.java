@@ -9,6 +9,10 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Servlet handling the admin user management page — lists all users and processes
+ * approve, delete, promote, and demote actions via POST.
+ */
 @WebServlet("/admin/users")
 public class AdminUserServlet extends HttpServlet {
 
@@ -21,10 +25,9 @@ public class AdminUserServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
-        // Admin or Co-Admin authorization check
         if (user == null || (!user.getRole().equalsIgnoreCase("admin")
                 && !user.getRole().equalsIgnoreCase("co-admin"))) {
-            request.getRequestDispatcher("/WEB-INF/views/error.jsp")
+            request.getRequestDispatcher("/WEB-INF/views/accessDenied.jsp")
                     .forward(request, response);
             return;
         }
@@ -44,7 +47,6 @@ public class AdminUserServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User currentUser = (session != null) ? (User) session.getAttribute("user") : null;
 
-        // Admin or Co-Admin authorization check
         if (currentUser == null || (!currentUser.getRole().equalsIgnoreCase("admin")
                 && !currentUser.getRole().equalsIgnoreCase("co-admin"))) {
             response.sendRedirect(request.getContextPath() + "/login");
