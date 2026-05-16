@@ -337,6 +337,30 @@ img {
 /* ---------- Forms ---------- */
 .form-group { margin-bottom: 15px; }
 
+/* ---------- Remember-Me Checkbox Row ---------- */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.form-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-teal);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.form-check label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin: 0;
+}
+
 .form-group label {
   display: block;
   font-size: 13px;

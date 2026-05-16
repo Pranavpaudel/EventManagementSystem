@@ -20,13 +20,20 @@
       <div class="form-group">
         <label for="identifier">Email or Contact</label>
         <input id="identifier" class="form-control" type="text" name="identifier"
-               placeholder="Enter your email or contact number" required>
+               placeholder="Enter your email or contact number"
+               value="${cookie.remember_identifier.value}" required>
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
         <input id="password" class="form-control" type="password" name="password"
                placeholder="Enter your password" required>
+      </div>
+
+      <div class="form-check">
+        <input id="rememberMe" type="checkbox" name="rememberMe" value="true"
+               ${not empty cookie.remember_identifier.value ? 'checked' : ''}>
+        <label for="rememberMe">Remember me for 30 days</label>
       </div>
 
       <button type="submit" class="btn btn--primary" style="width:100%;margin-top:.5rem;">Login</button>

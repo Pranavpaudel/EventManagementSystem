@@ -10,9 +10,14 @@ import java.io.IOException;
 
 /**
  * Handles user authentication — shows the login form on GET and processes credentials on POST.
+ * When "Remember Me" is checked, sets a 30-day {@code remember_identifier} cookie so the
+ * AuthFilter can restore the session on future visits without re-entering credentials.
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    static final String REMEMBER_COOKIE = "remember_identifier";
+    private static final int  THIRTY_DAYS = 30 * 24 * 60 * 60;
 
     private final UserService userService = new UserService();
 
@@ -52,6 +57,13 @@ public class LoginServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", found);
+
+        boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
+        Cookie cookie = new Cookie(REMEMBER_COOKIE, rememberMe ? identifier : "");
+        cookie.setMaxAge(rememberMe ? THIRTY_DAYS : 0);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         if (found.getRole().equalsIgnoreCase("admin")
                 || found.getRole().equalsIgnoreCase("co-admin")) {
