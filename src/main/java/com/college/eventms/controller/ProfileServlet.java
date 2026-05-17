@@ -78,6 +78,7 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
+        ProfileImageUtil.init(getServletContext().getRealPath("/"));
         Part imagePart = request.getPart("profileImage");
         String newImagePath = ProfileImageUtil.uploadImage(imagePart);
         if (newImagePath != null) {

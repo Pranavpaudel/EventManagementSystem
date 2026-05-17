@@ -76,6 +76,7 @@ public class EditEventServlet extends HttpServlet {
             return;
         }
 
+        ImageUtil.init(getServletContext().getRealPath("/"));
         Event existing = eventDAO.getEventById(eventId);
         Part imagePart = request.getPart("image");
         String newImagePath = ImageUtil.uploadImage(imagePart);

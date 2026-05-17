@@ -81,6 +81,7 @@ public class AddEventServlet extends HttpServlet {
             return;
         }
 
+        ImageUtil.init(getServletContext().getRealPath("/"));
         Part imagePart = request.getPart("image");
         String imagePath = ImageUtil.uploadImage(imagePart);
         if (imagePath == null) {

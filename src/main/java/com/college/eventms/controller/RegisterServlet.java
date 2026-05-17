@@ -30,6 +30,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        ProfileImageUtil.init(getServletContext().getRealPath("/"));
         Part imagePart = request.getPart("profileImage");
         String profileImage = ProfileImageUtil.uploadImage(imagePart);
         if (profileImage == null) {

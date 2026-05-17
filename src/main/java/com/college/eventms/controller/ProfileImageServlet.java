@@ -20,6 +20,8 @@ public class ProfileImageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        ProfileImageUtil.init(getServletContext().getRealPath("/"));
+
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
