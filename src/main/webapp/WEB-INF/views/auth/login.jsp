@@ -33,7 +33,7 @@
       <div class="form-check">
         <input id="rememberMe" type="checkbox" name="rememberMe" value="true"
                ${not empty cookie.remember_identifier.value ? 'checked' : ''}>
-        <label for="rememberMe">Remember me for 30 days</label>
+        <label for="rememberMe">Remember me</label>
       </div>
 
       <button type="submit" class="btn btn--primary" style="width:100%;margin-top:.5rem;">Login</button>

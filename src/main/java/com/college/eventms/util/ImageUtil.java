@@ -2,23 +2,18 @@ package com.college.eventms.util;
 
 import javax.servlet.http.Part;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Utility class for uploading and deleting event images.
- * The upload folder is set at webapp startup by UploadPathInitializer.
+ * The upload folder is a fixed absolute path to the project's uploads/events directory.
  */
 public class ImageUtil {
 
     private static String uploadFolder =
-            System.getProperty("user.home") + File.separator + "event-uploads" + File.separator;
+            "C:/Users/user/Desktop/Sem2/java/JavaAPT/EventManagementSystem/uploads/events/";
 
-    /**
-     * Overrides the default upload folder path. Called once at webapp startup by
-     * {@link UploadPathInitializer} to point at {@code uploads/event-uploads} inside the
-     * deployed webapp root.
-     *
-     * @param path absolute filesystem path (with trailing separator) to the event-uploads folder
-     */
     public static void setUploadFolder(String path) {
         uploadFolder = path;
     }
@@ -46,11 +41,12 @@ public class ImageUtil {
             }
 
             File uploadDir = new File(uploadFolder);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+            uploadDir.mkdirs();
 
-            String uniqueName = System.currentTimeMillis() + "_" + originalName;
+            System.out.println("[ImageUtil] Upload path: " + uploadDir.getAbsolutePath());
+
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String uniqueName = timestamp + "_" + originalName;
             part.write(uploadFolder + uniqueName);
             return uniqueName;
 

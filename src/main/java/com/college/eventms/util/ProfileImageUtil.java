@@ -2,35 +2,18 @@ package com.college.eventms.util;
 
 import javax.servlet.http.Part;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-/**
- * Utility class for uploading and deleting user profile images.
- * The upload folder is set at webapp startup by UploadPathInitializer.
- */
 public class ProfileImageUtil {
 
     private static String uploadFolder =
-            System.getProperty("user.home") + File.separator + "profile-uploads" + File.separator;
+            "C:/Users/user/Desktop/Sem2/java/JavaAPT/EventManagementSystem/uploads/profiles/";
 
-    /**
-     * Overrides the default upload folder path. Called once at webapp startup by
-     * {@link UploadPathInitializer} to point at {@code uploads/profile-uploads} inside the
-     * deployed webapp root.
-     *
-     * @param path absolute filesystem path (with trailing separator) to the profile-uploads folder
-     */
     public static void setUploadFolder(String path) {
         uploadFolder = path;
     }
 
-    /**
-     * Saves the submitted profile image to the profile-uploads folder using a
-     * {@code <timestamp>_<originalName>} filename to guarantee uniqueness.
-     *
-     * @param part the {@code multipart/form-data} file part from the servlet request
-     * @return the generated filename (e.g. {@code 1715000000000_avatar.png}) on success,
-     *         or {@code null} if the part is absent, empty, or not a supported image type
-     */
     public static String uploadImage(Part part) {
         try {
             if (part == null) return null;
@@ -46,11 +29,12 @@ public class ProfileImageUtil {
             }
 
             File uploadDir = new File(uploadFolder);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+            uploadDir.mkdirs();
 
-            String uniqueName = System.currentTimeMillis() + "_" + originalName;
+            System.out.println("[ProfileImageUtil] Upload path: " + uploadDir.getAbsolutePath());
+
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String uniqueName = timestamp + "_" + originalName;
             part.write(uploadFolder + uniqueName);
             return uniqueName;
 

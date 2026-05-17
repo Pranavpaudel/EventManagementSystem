@@ -10,14 +10,15 @@ import java.io.IOException;
 
 /**
  * Handles user authentication — shows the login form on GET and processes credentials on POST.
- * When "Remember Me" is checked, sets a 30-day {@code remember_identifier} cookie so the
+ * When "Remember Me" is checked, sets a 7-day {@code remember_identifier} cookie so the
  * AuthFilter can restore the session on future visits without re-entering credentials.
+ * When "Remember Me" is not checked, the cookie is cleared. Logout does not touch the cookie.
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    static final String REMEMBER_COOKIE = "remember_identifier";
-    private static final int  THIRTY_DAYS = 30 * 24 * 60 * 60;
+    public static final String REMEMBER_COOKIE = "remember_identifier";
+    private static final int   SEVEN_DAYS = 7 * 24 * 60 * 60;
 
     private final UserService userService = new UserService();
 
@@ -60,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 
         boolean rememberMe = "true".equals(request.getParameter("rememberMe"));
         Cookie cookie = new Cookie(REMEMBER_COOKIE, rememberMe ? identifier : "");
-        cookie.setMaxAge(rememberMe ? THIRTY_DAYS : 0);
+        cookie.setMaxAge(rememberMe ? SEVEN_DAYS : 0);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         response.addCookie(cookie);
