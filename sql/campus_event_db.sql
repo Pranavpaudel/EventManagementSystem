@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2026 at 06:06 PM
+-- Generation Time: May 17, 2026 at 05:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,9 +40,7 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`booking_id`, `user_id`, `event_id`, `booking_date`, `STATUS`) VALUES
-(1, 3, 1, '2026-05-16 15:47:08', 'CONFIRMED'),
 (2, 4, 2, '2026-05-16 15:59:47', 'CONFIRMED'),
-(3, 4, 1, '2026-05-16 15:59:51', 'CONFIRMED'),
 (4, 5, 2, '2026-05-16 16:00:29', 'CANCELLED');
 
 -- --------------------------------------------------------
@@ -108,8 +106,8 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`event_id`, `event_name`, `description`, `event_date`, `event_time`, `location`, `image`, `capacity`, `category_id`, `STATUS`, `created_by`) VALUES
-(1, 'Job Fair', 'Find job and Internship Opportunities, Event with image', '2026-05-16', '09:30:00', 'Nepal Block', '1778946368424_Jobfair.png', 2, 3, 'UPCOMING', 1),
-(2, 'Leading Innovation And Entrepreneurship', 'Event Example without image uploaded', '2026-05-20', '10:40:00', 'UK Block', 'static/images/default-event.png', 3, 4, 'UPCOMING', 1);
+(2, 'Leading Innovation And Entrepreneurship', 'Event Example without image uploaded', '2026-05-20', '10:40:00', 'UK Block', 'static/images/default-event.png', 3, 4, 'UPCOMING', 1),
+(6, 'Job Fair', 'With image', '2026-05-17', '08:00:00', 'UK Block', '20260517_085516_Jobfair.png', 10, 4, 'UPCOMING', 1);
 
 -- --------------------------------------------------------
 
@@ -135,7 +133,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `full_name`, `contact`, `email`, `profile_image`, `PASSWORD`, `dob`, `role`, `STATUS`, `created_at`) VALUES
-(1, 'Admin CEMS', '9999999999', 'admin@cems.com', '1778945806185_admin-icon-vector.jpg', '$2a$10$Hcx7pyr07a.x3KEi.QF36.7x5nNzSH4EUpSazMAy9s5U1IO/PHq7m', NULL, 'admin', 'approved', '2026-05-16 15:36:46'),
+(1, 'Admin CEMS', '9999999999', 'admin@cems.com', 'static/images/default-avatar.png', '$2a$10$Hcx7pyr07a.x3KEi.QF36.7x5nNzSH4EUpSazMAy9s5U1IO/PHq7m', NULL, 'admin', 'approved', '2026-05-16 15:36:46'),
 (2, 'CoAdmin CEMS', '88888888', 'coadmin@cems.com', 'static/images/default-avatar.png', '$2a$10$xeHwU/Rv4..JQ7WHLdomfuxWWLv5T6wn0lPXQsRRFyyFnA.ACMNtO', NULL, 'co-admin', 'approved', '2026-05-16 15:38:40'),
 (3, 'First Student', '7777777777', 'firststudent@cems.com', 'static/images/default-avatar.png', '$2a$10$qMM1dG1hLl4Kr4.Gh5fKmuBeQLCnBSXSEHb31ttU56mqOmBpurPDy', NULL, 'student', 'approved', '2026-05-16 15:39:33'),
 (4, 'Student withImage', '6666666666', 'studentwithimage@cems.com', '1778946092145_ai-generated-9295105_640.jpg', '$2a$10$2loOi3cFoD45byf/G/1VFuu0t0QjTWYj0/AHHuNMbYI91jR6eOyuC', NULL, 'student', 'approved', '2026-05-16 15:41:32'),
@@ -212,7 +210,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
